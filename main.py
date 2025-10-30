@@ -41,7 +41,7 @@ def main():
     # Visualize
     visualize_all(df_before, df, final_df)
 
-    print_section("PREPROCESSING DONE – READY FOR YOLO / CLASSIFIER")
+    print_section("PREPROCESSING DONE")
 
 if __name__ == "__main__":
     main()
