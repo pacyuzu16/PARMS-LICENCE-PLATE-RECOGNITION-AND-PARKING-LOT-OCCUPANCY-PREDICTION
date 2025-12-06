@@ -1,0 +1,17 @@
+License Plate Character Recognition Analysis
+==================================================
+
+Date: 2025-12-06 15:14:52
+Task: First Character Recognition (OCR-like)
+
+Model Performance:
+--------------------------------------------------
+              Model  Accuracy  Precision   Recall  F1-Score
+      Random Forest  0.618705   0.570514 0.618705  0.578652
+  Gradient Boosting  0.589928   0.542011 0.589928  0.555146
+ MLP Neural Network  0.589928   0.558285 0.589928  0.567578
+                SVM  0.604317   0.558807 0.604317  0.508686
+K-Nearest Neighbors  0.575540   0.561071 0.575540  0.526246
+
+Best Model: Random Forest
+Best Accuracy: 0.6187

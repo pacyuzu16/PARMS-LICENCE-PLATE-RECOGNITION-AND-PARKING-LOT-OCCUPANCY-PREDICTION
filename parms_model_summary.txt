@@ -1,0 +1,33 @@
+PARMS Model Training Summary
+========================================
+
+Training Date: 2025-12-06 14:35:02
+Model Type: RandomForestClassifier
+Features: 19
+
+Performance Metrics:
+  Accuracy: 0.8709
+  Precision: 0.8759
+  Recall: 0.8843
+  F1: 0.8801
+
+Feature Names:
+   1. width
+   2. height
+   3. area
+   4. hour
+   5. image_occupancy_rate
+   6. bbox_x
+   7. bbox_y
+   8. bbox_w
+   9. bbox_h
+  10. aspect_ratio
+  11. weather_enc
+  12. lot_enc
+  13. time_of_day_enc
+  14. image_occupancy_rate_scaled
+  15. bbox_x_scaled
+  16. bbox_y_scaled
+  17. bbox_w_scaled
+  18. bbox_h_scaled
+  19. aspect_ratio_scaled

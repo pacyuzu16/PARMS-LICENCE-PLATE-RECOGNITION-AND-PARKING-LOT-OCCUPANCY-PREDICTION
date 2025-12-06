@@ -1,101 +1,158 @@
-# PARKING MANAGEMENT SYSTEM (PARMS) — Data Preprocessing
+# PARMS - Parking Management System
 
-Group 9 | University of Rwanda — Computing Intelligence Module  
-Lecturer: Dr. HITIMANA Eric | Date: 25/10/2025
+A simple parking occupancy prediction system using machine learning. Processes COCO-format parking datasets and trains models to predict parking space availability.
 
-Overview
---------
-This repository demonstrates a complete data preprocessing pipeline for the PKLot-640 parking lot dataset, implementing six core preprocessing techniques and producing a cleaned CSV ready for downstream training.
+## Two Analysis Tools
 
-Key features
-- COCO loader and reduction to a balanced smaller dataset
-- Cleaning, integration, column reduction, transformation, discretization and augmentation
-- Visualizations for before/after inspection
-- Final output: `data/processed_pklot_parms_coco.csv`
+### 1. Parking Occupancy Analysis (`parms.py`)
+### 2. License Plate Recognition (`license_plate_analysis.py`)
 
-Quick links
-- Run full pipeline: [parms_preprocessing/main.py](parms_preprocessing/main.py)
-- Reduce dataset tool: [parms_preprocessing/reduce_dataset.py](parms_preprocessing/reduce_dataset.py)
-- COCO loader: [parms_preprocessing/coco_loader.py](parms_preprocessing/coco_loader.py) (`coco_loader.load_all_coco`, `coco_loader.load_coco_split`)
-- Steps implemented in code: `cleaning.clean_data`, `integration.integrate_data`, `reduction.reduce_data`, `transformation.transform_data`, `discretization.discretize_data`, `augmentation.augment_data`
-- Helpers: [parms_preprocessing/utils.py](parms_preprocessing/utils.py) (`utils.DATA_ROOT`, `utils.print_section`)
+## Quick Start
 
-Requirements
-------------
-- Python 3.8+
-- pip packages:
-  pandas, numpy, scikit-learn, matplotlib, seaborn, pillow
-
-Install:
-```sh
-pip install pandas numpy scikit-learn matplotlib seaborn pillow
+### Activate Environment
+```powershell
+.\parms_env\Scripts\Activate.ps1
 ```
 
-Dataset layout
---------------
-Place your full PKLot COCO dataset here:
-- data/pklot/train/
-- data/pklot/valid/
-- data/pklot/test/
-
-Each split must contain:
-- .jpg images
-- _annotations.coco.json
-
-Reducing the dataset (recommended)
-----------------------------------
-The reduction tool selects a balanced subset (default 500 images per split) and copies images + writes reduced COCO JSON to `data/pklot_reduced/`.
-
-Run:
-```sh
-python reduce_dataset.py
+### Run Parking Occupancy Analysis
+```bash
+python parms.py
 ```
-Configuration:
-- Change `IMAGES_PER_SPLIT` in [parms_preprocessing/reduce_dataset.py](parms_preprocessing/reduce_dataset.py) to adjust subset size.
 
-Run full preprocessing
-----------------------
-The pipeline follows the sequence in [parms_preprocessing/main.py](parms_preprocessing/main.py):
+**This command:**
+- Processes full parking dataset
+- Trains Random Forest model
+- Generates evaluation plots and metrics
+- Saves trained model (`parms_model.pkl`)
 
-0. Load COCO: `coco_loader.load_all_coco`  
-1. Clean: `cleaning.clean_data`  
-2. Integrate: `integration.integrate_data`  
-3. Reduce columns: `reduction.reduce_data`  
-4. Transform: `transformation.transform_data`  
-5. Discretize: `discretization.discretize_data`  
-6. Augment: `augmentation.augment_data`  
-Visualize: `visualize.visualize_all`
-
-Run:
-```sh
-python main.py
+### Run License Plate Recognition Analysis
+```bash
+python license_plate_analysis.py
 ```
-Output:
-- CSV: `data/processed_pklot_parms_coco.csv`
-- Visualizations: four interactive plots shown via matplotlib
 
-Tips & troubleshooting
-----------------------
-- If your pipeline appears to use reduced data, check `DATA_ROOT` in [parms_preprocessing/utils.py](parms_preprocessing/utils.py).
-- Missing datetime or parsing errors come from unexpected filename formats — inspect `filename` entries in your `_annotations.coco.json` (see [parms_preprocessing/coco_loader.py](parms_preprocessing/coco_loader.py)).
-- If images are not found during reduction, reduce_dataset prints warnings with the missing path.
+**This command:**
+- Loads license plate images from `data/License Plates Dataset/`
+- Trains 5 models: Random Forest, Gradient Boosting, MLP, SVM, K-Nearest Neighbors
+- Generates comparison visualizations
+- Saves best model (`license_plate_model.pkl`)
 
-Extending / customizing
------------------------
-- Tweak augmentation strategy in [parms_preprocessing/augmentation.py](parms_preprocessing/augmentation.py).
-- Adjust encoding/scaling in [parms_preprocessing/transformation.py](parms_preprocessing/transformation.py).
-- Modify discretization bins in [parms_preprocessing/discretization.py](parms_preprocessing/discretization.py).
+## Features
 
-Citation
---------
-Almeida, P. et al. (2015). _PKLot – A robust dataset for parking lot classification_. Expert Systems with Applications.
+- **Two Complete Pipelines**: Parking occupancy + License plate recognition
+- **Full Dataset**: Uses entire datasets (no artificial limits)
+- **Clean Output**: Simple text markers, no emojis
+- **Clear Visualizations**: Multi-panel evaluation reports
+- **Multiple Models**: Compare 5 different ML algorithms for license plates
 
-License
--------
-owned by pacyuzu and pauline
+## Project Structure
 
-Acknowledgements
-----------------
-This project uses the PKLot dataset (Roboflow public link: https://public.roboflow.ai/object-detection/pklot).
+```
+parms_preprocessing/
+├── parms.py              # Main application (CLI interface)
+├── data_processor.py     # Data loading, cleaning, feature engineering  
+├── model_trainer.py      # ML training, evaluation, visualization
+├── config.py            # Configuration and utilities
+├── requirements.txt     # Python dependencies
+├── data/               # Dataset folder
+│   ├── processed_pklot_parms_coco.csv  # Processed data (auto-generated)
+│   └── pklot_reduced/  # Raw COCO dataset
+│       ├── train/
+│       ├── valid/
+│       └── test/
+└── Generated Figures/  # Output visualizations (auto-generated)
+```
 
+## Command Options
 
+### Parking Occupancy (`parms.py`)
+```bash
+# Run everything (default - recommended)
+python parms.py
+
+# Data preprocessing only
+python parms.py --preprocess
+
+# Model training only  
+python parms.py --train
+
+# Interactive demo
+python parms.py --demo
+```
+
+### License Plate Recognition (`license_plate_analysis.py`)
+```bash
+# Run complete analysis
+python license_plate_analysis.py
+```
+
+## Output Files
+
+### Parking Occupancy Analysis
+- `parms_model.pkl` - Trained Random Forest model
+- `parms_model_summary.txt` - Performance metrics and feature list
+- `data/processed_pklot_parms_coco.csv` - Processed dataset
+- `Generated Figures/parking_model_evaluation.png` - 4-panel evaluation report
+
+### License Plate Recognition Analysis
+- `license_plate_model.pkl` - Best trained model
+- `license_plate_results.csv` - All model comparisons
+- `license_plate_summary.txt` - Performance summary
+- `Generated Figures/license_plate_analysis.png` - 6-panel comparison report
+
+## Configuration
+
+Key settings in `config.py`:
+- `max_samples`: None (uses full dataset)
+- `test_size`: 0.2 (20% test split)
+- `random_seed`: 42
+
+## Requirements
+
+All dependencies are in `requirements.txt`:
+- scikit-learn (Random Forest)
+- pandas, numpy (data processing)
+- matplotlib, seaborn (visualizations)
+- Pillow (image handling)
+
+## Expected Performance
+
+### Parking Occupancy (PKLot dataset)
+- **Accuracy**: ~87%
+- **F1-Score**: ~88%
+- **AUC**: ~95%
+- **Training Time**: 2-5 minutes
+
+### License Plate Recognition
+- **5 Models Compared**: Random Forest, Gradient Boosting, MLP, SVM, KNN
+- **Performance**: Varies by model (see generated report)
+- **Training Time**: 5-10 minutes for all models
+
+## Troubleshooting
+
+**Data not found?**
+- Ensure COCO dataset is in `data/pklot_reduced/` with train/valid/test folders
+- Each folder needs `_annotations.coco.json`
+
+**Import errors?**
+- Activate environment: `.\parms_env\Scripts\Activate.ps1`
+- Install dependencies: `pip install -r requirements.txt`
+
+## How It Works
+
+1. **Data Processing**: Loads COCO annotations, cleans data, engineers features (occupancy rates, time features, bbox coordinates)
+2. **Model Training**: Random Forest classifier with 5-fold cross-validation
+3. **Evaluation**: Generates confusion matrix, ROC curve, feature importance plots, and metrics
+4. **Output**: Saves model and creates evaluation report
+
+## Notebook Analysis
+
+For deeper analysis, run `PARMS_Analysis.ipynb`:
+- Compares multiple models (Random Forest, Gradient Boosting, MLP)
+- Optional neural network models (if TensorFlow installed)
+- Additional visualizations and metrics
+
+Launch with: `.\launch_notebook.bat`
+
+---
+
+**PARMS**: Simple parking prediction for everyone.
